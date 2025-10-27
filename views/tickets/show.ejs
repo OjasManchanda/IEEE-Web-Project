@@ -1,4 +1,5 @@
-<%- include('../partials/boilerplate', { title: ticket.eventName }) %>
+<% layout('../views/partials/boilerplate') %>
+<% title = "Show Ticket" %>
 
 <div class="row">
   <div class="col-lg-8 mx-auto">
@@ -13,18 +14,18 @@
             <h5>Event Details</h5>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
-                <strong>📅 Date:</strong> 
+                <strong>Date:</strong> 
                 <%= ticket.eventDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
               </li>
               <li class="list-group-item">
-                <strong>📍 Location:</strong> <%= ticket.location %>
+                <strong>Location:</strong> <%= ticket.location %>
               </li>
               <li class="list-group-item">
-                <strong>💰 Price:</strong> 
+                <strong>Price:</strong> 
                 <span class="text-success fs-4">₹<%= ticket.pricePerTicket.toLocaleString('en-IN') %></span> per ticket
               </li>
               <li class="list-group-item">
-                <strong>🎫 Available:</strong> 
+                <strong>Available:</strong> 
                 <span class="badge bg-success fs-6"><%= ticket.ticketsAvailable %> tickets</span>
               </li>
             </ul>
@@ -33,13 +34,13 @@
             <h5>Additional Information</h5>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
-                <strong>👤 Seller:</strong> <%= ticket.owner.username %>
+                <strong>Seller:</strong> <%= ticket.owner.username %>
               </li>
               <li class="list-group-item">
-                <strong>📧 Contact:</strong> <%= ticket.owner.email %>
+                <strong>Contact:</strong> <%= ticket.owner.email %>
               </li>
               <li class="list-group-item">
-                <strong>📝 Listed On:</strong> <%= ticket.createdAt.toLocaleDateString('en-IN') %>
+                <strong>Listed On:</strong> <%= ticket.createdAt.toLocaleDateString('en-IN') %>
               </li>
             </ul>
           </div>
@@ -55,28 +56,25 @@
 
         <div class="d-flex gap-2 flex-wrap">
           <% if (currentUser && ticket.owner.equals(currentUser._id)) { %>
-            <!-- Owner can edit/delete -->
             <a href="/tickets/<%= ticket._id %>/edit" class="btn btn-warning">
-              ✏️ Edit Ticket
+              Edit Ticket
             </a>
             <form action="/tickets/<%= ticket._id %>?_method=DELETE" method="POST" class="d-inline">
               <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this ticket?')">
-                🗑️ Delete Ticket
+                Delete Ticket
               </button>
             </form>
           <% } else if (currentUser) { %>
-            <!-- Other users can show interest -->
             <button class="btn btn-success btn-lg" disabled>
-              🎫 Contact Seller (Feature Coming Soon)
+              Contact Seller (Feature Coming Soon)
             </button>
           <% } else { %>
-            <!-- Not logged in -->
             <a href="/users/login" class="btn btn-primary btn-lg">
               Login to Purchase
             </a>
           <% } %>
 
-          <a href="/tickets" class="btn btn-secondary ms-auto">⬅️ Back to All Tickets</a>
+          <a href="/tickets" class="btn btn-secondary ms-auto">Back to All Tickets</a>
         </div>
       </div>
     </div>

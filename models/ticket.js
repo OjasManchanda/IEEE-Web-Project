@@ -20,8 +20,8 @@ const ticketSchema = new Schema({
     min: 1,
   },
   owner: {
-    type: Schema.Types.ObjectId,  // ✅ Changed from String
-    ref: "User",                   // ✅ Reference User model
+    type: Schema.Types.ObjectId, 
+    ref: "User",            
     required: true,
   },
   location: {

@@ -6,14 +6,13 @@ module.exports.renderSignupForm = (req, res) => {
   res.render("users/signup");
 };
 
-// Handle signup
+
 module.exports.signupUser = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body.user;
-    const user = new User({ email, username });
+    const { username, email, password, role } = req.body; 
+    const user = new User({ email, username, role }); 
     const registeredUser = await User.register(user, password);
-    
-    // Auto-login after signup
+
     req.login(registeredUser, (err) => {
       if (err) return next(err);
       req.flash("success", `Welcome to Event Ticket Marketplace, ${username}!`);
@@ -24,6 +23,7 @@ module.exports.signupUser = async (req, res, next) => {
     res.redirect("/users/signup");
   }
 };
+
 
 // Render login form
 module.exports.renderLoginForm = (req, res) => {
@@ -43,6 +43,6 @@ module.exports.logoutUser = (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
     req.flash("success", "Logged out successfully!");
-    res.redirect("/tickets");
+    res.redirect("/");
   });
 };

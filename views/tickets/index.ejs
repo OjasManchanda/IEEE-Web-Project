@@ -1,7 +1,7 @@
 <% layout('partials/boilerplate') -%>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h1>🎟 Available Tickets</h1>
+  <h1>Available Tickets</h1>
   <% if (currentUser) { %>
     <a href="/tickets/new" class="btn btn-success">+ Sell Ticket</a>
   <% } %>
@@ -31,9 +31,9 @@
               </small>
             </p>
             <p class="card-text">
-              📍 <strong><%= ticket.location %></strong><br />
-              💰 <strong class="text-success">₹<%= ticket.pricePerTicket.toLocaleString('en-IN') %></strong> per ticket<br />
-              🎫 <strong><%= ticket.ticketsAvailable %></strong> available
+               <strong><%= ticket.location %></strong><br />
+               <strong class="text-success">₹<%= ticket.pricePerTicket.toLocaleString('en-IN') %></strong> per ticket<br />
+               <strong><%= ticket.ticketsAvailable %></strong> available
             </p>
             <% if (ticket.owner && ticket.owner.username) { %>
               <p class="card-text">

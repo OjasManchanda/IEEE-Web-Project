@@ -3,7 +3,8 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-h1, h2 {
+h1,
+h2 {
   color: #333;
 }
 
@@ -18,4 +19,36 @@ h1, h2 {
 
 .btn {
   border-radius: 8px;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1; 
 }

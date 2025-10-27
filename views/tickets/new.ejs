@@ -1,4 +1,5 @@
-<%- include('../partials/boilerplate', { title: "Add Ticket" }) %>
+<% layout('../views/partials/boilerplate') %>
+<% title = "Add Ticket" %>
 
 <div class="row">
   <div class="col-lg-8 mx-auto">
@@ -38,12 +39,12 @@
               <label class="form-label">Category *</label>
               <select name="ticket[eventCategory]" class="form-select" required>
                 <option value="">Choose...</option>
-                <option value="Concert">🎵 Concert</option>
-                <option value="Sports">⚽ Sports</option>
-                <option value="Theatre">🎭 Theatre</option>
-                <option value="Festival">🎉 Festival</option>
-                <option value="Comedy">😂 Comedy</option>
-                <option value="Other">📌 Other</option>
+                <option value="Concert">Concert</option>
+                <option value="Sports">Sports</option>
+                <option value="Theatre">Theatre</option>
+                <option value="Festival">Festival</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Other">Other</option>
               </select>
               <div class="invalid-feedback">Please select a category.</div>
             </div>
@@ -100,9 +101,7 @@
           </div>
 
           <div class="d-grid gap-2">
-            <button class="btn btn-success btn-lg" type="submit">
-              ✅ Create Ticket Listing
-            </button>
+            <button class="btn btn-success btn-lg" type="submit">Create Ticket Listing</button>
             <a href="/tickets" class="btn btn-outline-secondary">Cancel</a>
           </div>
         </form>
@@ -112,18 +111,17 @@
 </div>
 
 <script>
-  // Bootstrap form validation
-  (function () {
-    'use strict'
-    var forms = document.querySelectorAll('.needs-validation')
-    Array.prototype.slice.call(forms).forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-        form.classList.add('was-validated')
-      }, false)
-    })
-  })()
+(function () {
+  'use strict'
+  var forms = document.querySelectorAll('.needs-validation')
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
 </script>

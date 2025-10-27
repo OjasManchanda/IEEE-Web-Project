@@ -1,27 +1,28 @@
 const express = require("express");
 const router = express.Router();
+const wrapAsync = require("../utils/wrapAsync");
+const { isLoggedIn } = require("../middleware");
 const ticketController = require("../controllers/ticketController");
-const { isLoggedIn, validateTicket, isOwner } = require("../middleware");
 
-// Show all tickets
+// All tickets
 router.get("/", ticketController.index);
 
-// New ticket form
+// New form
 router.get("/new", isLoggedIn, ticketController.renderNewForm);
 
 // Create ticket
-router.post("/", isLoggedIn, validateTicket, ticketController.createTicket);
+router.post("/", isLoggedIn, ticketController.createTicket);
 
-// Show one ticket
-router.get("/:id", ticketController.showTicket);
+// Show ticket
+router.get("/:id", wrapAsync(ticketController.showTicket));
 
 // Edit form
-router.get("/:id/edit", isLoggedIn, isOwner, ticketController.renderEditForm);
+router.get("/:id/edit", isLoggedIn, ticketController.renderEditForm);
 
-// Update
-router.put("/:id", isLoggedIn, isOwner, validateTicket, ticketController.updateTicket);
+// Update ticket
+router.put("/:id", isLoggedIn, ticketController.updateTicket);
 
-// Delete
-router.delete("/:id", isLoggedIn, isOwner, ticketController.deleteTicket);
+// Delete ticket
+router.delete("/:id", isLoggedIn, ticketController.deleteTicket);
 
 module.exports = router;

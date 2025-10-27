@@ -15,19 +15,16 @@ const LocalStrategy = require("passport-local");
 const MongoStore = require("connect-mongo");
 const User = require("./models/user");
 
-// ROUTES
 const ticketRoutes = require("./routes/tickets");
 const userRoutes = require("./routes/users");
 
-// ✅ DATABASE CONNECTION
 const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/eventTickets";
 
 mongoose
   .connect(dbUrl)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-// ✅ EJS + STATIC SETUP
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -36,17 +33,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ SESSION CONFIGURATION
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto: {
     secret: process.env.SESSION_SECRET || "thisshouldbeabettersecret",
   },
-  touchAfter: 24 * 60 * 60, // time period in seconds
+  touchAfter: 24 * 60 * 60 * 7,
 });
 
-store.on("error", function (e) {
-  console.log("❌ SESSION STORE ERROR", e);
+store.on("error", (e) => {
+  console.log("SESSION STORE ERROR", e);
 });
 
 const sessionConfig = {
@@ -57,8 +53,8 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // ✅ only use HTTPS in production
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
+    secure: process.env.NODE_ENV === "production",
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
@@ -66,14 +62,12 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-// ✅ PASSPORT CONFIGURATION
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// ✅ GLOBAL MIDDLEWARE FOR FLASH + USER
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
@@ -81,7 +75,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// ✅ ROUTES
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -95,16 +88,13 @@ app.use((req, res) => {
   });
 });
 
-
-// ✅ GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
   if (!err.message) err.message = "Something went wrong!";
   res.status(statusCode).render("error", { err });
 });
 
-// ✅ SERVER
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(` Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
