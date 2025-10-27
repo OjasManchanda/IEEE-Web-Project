@@ -1,0 +1,129 @@
+<%- include('../partials/boilerplate', { title: "Add Ticket" }) %>
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white">
+        <h2 class="mb-0">List a New Ticket</h2>
+      </div>
+      <div class="card-body">
+        <form action="/tickets" method="POST" novalidate class="needs-validation">
+          
+          <div class="mb-3">
+            <label class="form-label">Event Name *</label>
+            <input 
+              type="text" 
+              name="ticket[eventName]" 
+              class="form-control" 
+              placeholder="e.g., Coldplay Concert 2024"
+              required 
+            />
+            <div class="invalid-feedback">Please enter event name.</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Date of Event *</label>
+              <input 
+                type="date" 
+                name="ticket[eventDate]" 
+                class="form-control" 
+                min="<%= new Date().toISOString().split('T')[0] %>"
+                required 
+              />
+              <div class="invalid-feedback">Please select event date.</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Category *</label>
+              <select name="ticket[eventCategory]" class="form-select" required>
+                <option value="">Choose...</option>
+                <option value="Concert">🎵 Concert</option>
+                <option value="Sports">⚽ Sports</option>
+                <option value="Theatre">🎭 Theatre</option>
+                <option value="Festival">🎉 Festival</option>
+                <option value="Comedy">😂 Comedy</option>
+                <option value="Other">📌 Other</option>
+              </select>
+              <div class="invalid-feedback">Please select a category.</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Location *</label>
+            <input 
+              type="text" 
+              name="ticket[location]" 
+              class="form-control" 
+              placeholder="e.g., Mumbai, Maharashtra"
+              required 
+            />
+            <div class="invalid-feedback">Please enter location.</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Price per Ticket (₹) *</label>
+              <input 
+                type="number" 
+                name="ticket[pricePerTicket]" 
+                class="form-control" 
+                min="1" 
+                placeholder="1000"
+                required 
+              />
+              <div class="invalid-feedback">Please enter valid price.</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tickets Available *</label>
+              <input 
+                type="number" 
+                name="ticket[ticketsAvailable]" 
+                class="form-control" 
+                min="1" 
+                placeholder="2"
+                required 
+              />
+              <div class="invalid-feedback">Please enter number of tickets.</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description (Optional)</label>
+            <textarea 
+              name="ticket[description]" 
+              class="form-control" 
+              rows="4"
+              placeholder="Add any additional details about the tickets..."
+            ></textarea>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button class="btn btn-success btn-lg" type="submit">
+              ✅ Create Ticket Listing
+            </button>
+            <a href="/tickets" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Bootstrap form validation
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>

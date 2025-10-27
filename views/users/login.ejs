@@ -1,0 +1,65 @@
+<% layout('partials/boilerplate') %>
+
+<div class="row">
+  <div class="col-md-6 mx-auto">
+    <div class="card shadow mt-5">
+      <div class="card-header bg-success text-white">
+        <h2 class="mb-0">Login to Your Account</h2>
+      </div>
+      <div class="card-body">
+        <form action="/users/login" method="POST" novalidate class="needs-validation">
+          <div class="mb-3">
+            <label class="form-label">Username *</label>
+            <input 
+              type="text" 
+              name="username" 
+              class="form-control" 
+              placeholder="Enter your username"
+              required autofocus
+            />
+            <div class="invalid-feedback">Please enter your username.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password *</label>
+            <input 
+              type="password" 
+              name="password" 
+              class="form-control" 
+              placeholder="Enter your password"
+              required
+            />
+            <div class="invalid-feedback">Please enter your password.</div>
+          </div>
+
+          <div class="d-grid">
+            <button class="btn btn-success btn-lg" type="submit">
+              🔐 Login
+            </button>
+          </div>
+
+          <hr class="my-3">
+          <p class="text-center mb-0">
+            Don't have an account? <a href="/users/signup">Sign up here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>

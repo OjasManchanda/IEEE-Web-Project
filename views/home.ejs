@@ -1,0 +1,27 @@
+<% layout('partials/boilerplate') %>
+
+<div class="text-center mt-5">
+  <h1 class="display-4">🎫 Welcome to Event Ticket Marketplace!</h1>
+  <p class="lead mt-3">Buy and sell event tickets easily and securely.</p>
+  <hr class="my-4">
+  <p>Find tickets for concerts, sports, theatre, festivals, and more!</p>
+  <a href="/tickets" class="btn btn-primary btn-lg mt-3 me-2">Browse Tickets</a>
+  <% if (!currentUser) { %>
+    <a href="/users/signup" class="btn btn-outline-success btn-lg mt-3">Get Started</a>
+  <% } %>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-4 text-center">
+    <h3>🎭 Wide Selection</h3>
+    <p>Find tickets for all types of events.</p>
+  </div>
+  <div class="col-md-4 text-center">
+    <h3>💰 Fair Prices</h3>
+    <p>Resell your tickets at reasonable prices.</p>
+  </div>
+  <div class="col-md-4 text-center">
+    <h3>🔒 Secure</h3>
+    <p>Safe and trusted marketplace for everyone.</p>
+  </div>
+</div>

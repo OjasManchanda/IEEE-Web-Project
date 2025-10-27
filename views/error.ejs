@@ -1,0 +1,7 @@
+<% layout('partials/boilerplate') %>
+
+<div class="text-center mt-5">
+  <h1>❌ <%= err && err.statusCode ? err.statusCode : 500 %> Error</h1>
+  <p><%= err && err.message ? err.message : "Something went wrong!" %></p>
+  <a href="/" class="btn btn-secondary mt-3">Go Back Home</a>
+</div>

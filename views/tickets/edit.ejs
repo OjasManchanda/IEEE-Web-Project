@@ -1,0 +1,121 @@
+<%- include('../partials/boilerplate', { title: "Edit Ticket" }) %>
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="card shadow">
+      <div class="card-header bg-warning">
+        <h2 class="mb-0">Edit Ticket</h2>
+      </div>
+      <div class="card-body">
+        <form action="/tickets/<%= ticket._id %>?_method=PUT" method="POST" novalidate class="needs-validation">
+          
+          <div class="mb-3">
+            <label class="form-label">Event Name *</label>
+            <input 
+              type="text" 
+              name="ticket[eventName]" 
+              class="form-control" 
+              value="<%= ticket.eventName %>" 
+              required 
+            />
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Date of Event *</label>
+              <input 
+                type="date" 
+                name="ticket[eventDate]" 
+                class="form-control"
+                value="<%= ticket.eventDate.toISOString().split('T')[0] %>" 
+                required 
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Category *</label>
+              <select name="ticket[eventCategory]" class="form-select" required>
+                <option value="Concert" <%= ticket.eventCategory === 'Concert' ? 'selected' : '' %>>🎵 Concert</option>
+                <option value="Sports" <%= ticket.eventCategory === 'Sports' ? 'selected' : '' %>>⚽ Sports</option>
+                <option value="Theatre" <%= ticket.eventCategory === 'Theatre' ? 'selected' : '' %>>🎭 Theatre</option>
+                <option value="Festival" <%= ticket.eventCategory === 'Festival' ? 'selected' : '' %>>🎉 Festival</option>
+                <option value="Comedy" <%= ticket.eventCategory === 'Comedy' ? 'selected' : '' %>>😂 Comedy</option>
+                <option value="Other" <%= ticket.eventCategory === 'Other' ? 'selected' : '' %>>📌 Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Location *</label>
+            <input 
+              type="text" 
+              name="ticket[location]" 
+              class="form-control" 
+              value="<%= ticket.location %>" 
+              required 
+            />
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Price per Ticket (₹) *</label>
+              <input 
+                type="number" 
+                name="ticket[pricePerTicket]" 
+                class="form-control" 
+                value="<%= ticket.pricePerTicket %>" 
+                min="1" 
+                required 
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tickets Available *</label>
+              <input 
+                type="number" 
+                name="ticket[ticketsAvailable]" 
+                class="form-control" 
+                value="<%= ticket.ticketsAvailable %>" 
+                min="1" 
+                required 
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea 
+              name="ticket[description]" 
+              class="form-control" 
+              rows="4"
+            ><%= ticket.description %></textarea>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button class="btn btn-warning btn-lg" type="submit">
+              💾 Update Ticket
+            </button>
+            <a href="/tickets/<%= ticket._id %>" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Bootstrap form validation
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>
