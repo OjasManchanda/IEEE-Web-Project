@@ -1,0 +1,187 @@
+<% layout('partials/boilerplate') -%>
+
+<div class="container-fluid mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📊 Admin Analytics Dashboard</h1>
+    <div>
+      <a href="/tickets/admin/qr-scanner" class="btn btn-warning me-2">🎫 QR Scanner</a>
+      <a href="/tickets" class="btn btn-secondary">← Back to Tickets</a>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Total Tickets</h5>
+          <h2><%= totalTickets %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Booked Tickets</h5>
+          <h2><%= bookedTickets %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-info">
+        <div class="card-body">
+          <h5 class="card-title">Total Revenue</h5>
+          <h2>₹<%= totalRevenue.toLocaleString('en-IN') %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <h5 class="card-title">Available Tickets</h5>
+          <h2><%= availableTickets %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-white">
+          <h5>Tickets by Category</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="categoryChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-white">
+          <h5>Revenue by Category</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card shadow">
+        <div class="card-header bg-white">
+          <h5>Recent Bookings</h5>
+        </div>
+        <div class="card-body">
+          <% if (recentBookings.length === 0) { %>
+            <p class="text-center text-muted">No recent bookings</p>
+          <% } else { %>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Booking ID</th>
+                    <th>Event</th>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% recentBookings.forEach(booking => { %>
+                    <tr>
+                      <td><%= booking.bookingId %></td>
+                      <td><%= booking.eventName %></td>
+                      <td><%= booking.bookedBy.username %></td>
+                      <td><%= booking.bookingDate.toLocaleDateString('en-IN') %></td>
+                      <td>₹<%= booking.pricePerTicket.toLocaleString('en-IN') %></td>
+                      <td>
+                        <span class="badge bg-<%= booking.status === 'booked' ? 'success' : 'secondary' %>">
+                          <%= booking.status %>
+                        </span>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Parse data from EJS variables
+  const categoryLabels = JSON.parse('<%- JSON.stringify(categoryLabels) %>');
+  const categoryData = JSON.parse('<%- JSON.stringify(categoryData) %>');
+  const revenueData = JSON.parse('<%- JSON.stringify(revenueData) %>');
+
+  // Category Chart
+  const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+  const categoryChart = new Chart(categoryCtx, {
+    type: 'pie',
+    data: {
+      labels: categoryLabels,
+      datasets: [{
+        data: categoryData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+        }
+      }
+    }
+  });
+
+  // Revenue Chart
+  const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+  const revenueChart = new Chart(revenueCtx, {
+    type: 'bar',
+    data: {
+      labels: categoryLabels,
+      datasets: [{
+        label: 'Revenue (₹)',
+        data: revenueData,
+        backgroundColor: 'rgba(54, 162, 235, 0.8)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>

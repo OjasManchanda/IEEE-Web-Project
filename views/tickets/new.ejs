@@ -1,44 +1,41 @@
-<% layout('../views/partials/boilerplate') %>
-<% title = "Add Ticket" %>
+<% layout('partials/boilerplate') -%>
 
-<div class="row">
-  <div class="col-lg-8 mx-auto">
-    <div class="card shadow">
-      <div class="card-header bg-success text-white">
-        <h2 class="mb-0">List a New Ticket</h2>
-      </div>
-      <div class="card-body">
-        <form action="/tickets" method="POST" novalidate class="needs-validation">
-          
-          <div class="mb-3">
-            <label class="form-label">Event Name *</label>
-            <input 
-              type="text" 
-              name="ticket[eventName]" 
-              class="form-control" 
-              placeholder="e.g., Coldplay Concert 2024"
-              required 
-            />
-            <div class="invalid-feedback">Please enter event name.</div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Date of Event *</label>
-              <input 
-                type="date" 
-                name="ticket[eventDate]" 
-                class="form-control" 
-                min="<%= new Date().toISOString().split('T')[0] %>"
-                required 
-              />
-              <div class="invalid-feedback">Please select event date.</div>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h2>🎫 List New Ticket</h2>
+        </div>
+        <div class="card-body">
+          <form action="/tickets" method="POST" novalidate class="needs-validation">
+            <!-- Event Name -->
+            <div class="mb-3">
+              <label class="form-label">Event Name *</label>
+              <input type="text" name="ticket[eventName]" class="form-control" placeholder="Concert, Match, Play, etc." required
+                autofocus />
+              <div class="invalid-feedback">Please provide an event name.</div>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <!-- Event Date -->
+            <div class="mb-3">
+              <label class="form-label">Event Date *</label>
+              <input type="date" name="ticket[eventDate]" class="form-control" required min="<%= new Date().toISOString().split('T')[0] %>" />
+              <div class="invalid-feedback">Please select a valid event date.</div>
+            </div>
+
+            <!-- Location -->
+            <div class="mb-3">
+              <label class="form-label">Location *</label>
+              <input type="text" name="ticket[location]" class="form-control" placeholder="Venue address" required />
+              <div class="invalid-feedback">Please provide a location.</div>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
               <label class="form-label">Category *</label>
               <select name="ticket[eventCategory]" class="form-select" required>
-                <option value="">Choose...</option>
+                <option value="">Select a category</option>
                 <option value="Concert">Concert</option>
                 <option value="Sports">Sports</option>
                 <option value="Theatre">Theatre</option>
@@ -48,80 +45,55 @@
               </select>
               <div class="invalid-feedback">Please select a category.</div>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label">Location *</label>
-            <input 
-              type="text" 
-              name="ticket[location]" 
-              class="form-control" 
-              placeholder="e.g., Mumbai, Maharashtra"
-              required 
-            />
-            <div class="invalid-feedback">Please enter location.</div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Price per Ticket (₹) *</label>
-              <input 
-                type="number" 
-                name="ticket[pricePerTicket]" 
-                class="form-control" 
-                min="1" 
-                placeholder="1000"
-                required 
-              />
-              <div class="invalid-feedback">Please enter valid price.</div>
+            <!-- Base Price -->
+            <div class="mb-3">
+              <label class="form-label">Base Price (₹) *</label>
+              <input type="number" name="ticket[basePrice]" class="form-control" placeholder="200" min="1" required />
+              <div class="invalid-feedback">Please provide a valid price.</div>
             </div>
 
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Tickets Available *</label>
-              <input 
-                type="number" 
-                name="ticket[ticketsAvailable]" 
-                class="form-control" 
-                min="1" 
-                placeholder="2"
-                required 
-              />
-              <div class="invalid-feedback">Please enter number of tickets.</div>
+            <!-- Total Seats -->
+            <div class="mb-3">
+              <label class="form-label">Total Seats *</label>
+              <input type="number" name="ticket[totalSeats]" class="form-control" placeholder="100" min="1" required />
+              <div class="invalid-feedback">Please provide the total number of seats.</div>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label">Description (Optional)</label>
-            <textarea 
-              name="ticket[description]" 
-              class="form-control" 
-              rows="4"
-              placeholder="Add any additional details about the tickets..."
-            ></textarea>
-          </div>
+            <!-- Description -->
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea name="ticket[description]" class="form-control" rows="3"
+                placeholder="Additional details about the event..."></textarea>
+            </div>
 
-          <div class="d-grid gap-2">
-            <button class="btn btn-success btn-lg" type="submit">Create Ticket Listing</button>
-            <a href="/tickets" class="btn btn-outline-secondary">Cancel</a>
-          </div>
-        </form>
+            <!-- Hidden fields for initial state -->
+            <input type="hidden" name="ticket[pricePerTicket]" id="pricePerTicket" value="0" />
+            <input type="hidden" name="ticket[ticketsAvailable]" id="ticketsAvailable" value="0" />
+
+            <div class="d-grid">
+              <button class="btn btn-primary btn-lg" type="submit">
+                🎫 List Ticket
+              </button>
+            </div>
+
+            <hr class="my-3">
+            <a href="/tickets" class="btn btn-secondary">← Back to Tickets</a>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-(function () {
-  'use strict'
-  var forms = document.querySelectorAll('.needs-validation')
-  Array.prototype.slice.call(forms).forEach(function (form) {
-    form.addEventListener('submit', function (event) {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-      form.classList.add('was-validated')
-    }, false)
-  })
-})()
+  // Set initial values when form is submitted
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const basePrice = document.querySelector('input[name="ticket[basePrice]"]').value;
+    const totalSeats = document.querySelector('input[name="ticket[totalSeats]"]').value;
+    
+    // Set both pricePerTicket and ticketsAvailable to initial values
+    document.getElementById('pricePerTicket').value = basePrice;
+    document.getElementById('ticketsAvailable').value = totalSeats;
+  });
 </script>
