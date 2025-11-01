@@ -14,7 +14,9 @@ module.exports.signupUser = async (req, res, next) => {
     const registeredUser = await User.register(user, password);
 
     req.login(registeredUser, (err) => {
-      if (err) return next(err);
+      if (err) {
+        return next(err);
+      }
       req.flash("success", `Welcome to Event Ticket Marketplace, ${username}!`);
       res.redirect("/tickets");
     });
@@ -41,7 +43,9 @@ module.exports.loginUser = (req, res) => {
 // Logout
 module.exports.logoutUser = (req, res, next) => {
   req.logout((err) => {
-    if (err) return next(err);
+    if (err)  {
+      return next(err);
+    }
     req.flash("success", "Logged out successfully!");
     res.redirect("/");
   });
