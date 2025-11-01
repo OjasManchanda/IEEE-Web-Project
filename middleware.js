@@ -4,27 +4,11 @@ const { ticketSchema } = require("./schema");
 
 // Check if the user is logged in
 module.exports.isLoggedIn = (req, res, next) => {
-  console.log("=== isLoggedIn middleware called ===");
-  console.log("User authenticated:", req.isAuthenticated());
-  console.log("User object:", req.user);
   if (!req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl;
-    req.flash("error", "You must be logged in!");
+    req.flash("error", "You must be signed in first!");
     return res.redirect("/users/login");
   }
-  console.log("User is logged in, proceeding to next middleware");
-  next();
-};
-
-module.exports.isAdmin = (req, res, next) => {
-  console.log("=== isAdmin middleware called ===");
-  console.log("User object:", req.user);
-  // For now, we'll consider users with role 'admin' or 'seller' as admins
-  if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'seller')) {
-    req.flash("error", "You don't have permission to access this page!");
-    return res.redirect("/tickets");
-  }
-  console.log("User has admin/seller role, proceeding to next middleware");
   next();
 };
 

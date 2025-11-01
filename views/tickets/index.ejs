@@ -2,66 +2,16 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h1>Available Tickets</h1>
-  <% if (typeof currentUser !== 'undefined' && currentUser) { %>
-    <% if (currentUser.role === 'seller' || currentUser.role === 'admin') { %>
-      <a href="/tickets/new" class="btn btn-success">+ Sell Ticket</a>
-    <% } %>
+  <% if (currentUser) { %>
+    <a href="/tickets/new" class="btn btn-success">+ Sell Ticket</a>
   <% } %>
 </div>
-
-<!-- Debug information - remove this in production -->
-<% if (typeof currentUser !== 'undefined' && currentUser) { %>
-  <div class="alert alert-info">
-    <strong>Debug Info:</strong> 
-    User: <%= currentUser.username %> | 
-    Role: <%= currentUser.role %> | 
-    Role Type: <%= typeof currentUser.role %>
-  </div>
-<% } else { %>
-  <div class="alert alert-warning">
-    <strong>Debug Info:</strong> No current user found
-  </div>
-<% } %>
-
-<!-- Search and Filter Form -->
-<div class="card mb-4">
-  <div class="card-body">
-    <form action="/tickets/search" method="GET" class="row g-3">
-      <div class="col-md-4">
-        <input type="text" class="form-control" name="query" placeholder="Search by event name, location..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
-      </div>
-      <div class="col-md-3">
-        <select class="form-select" name="category">
-          <option value="">All Categories</option>
-          <option value="Concert" <%= typeof categoryFilter !== 'undefined' && categoryFilter === 'Concert' ? 'selected' : '' %>>Concert</option>
-          <option value="Sports" <%= typeof categoryFilter !== 'undefined' && categoryFilter === 'Sports' ? 'selected' : '' %>>Sports</option>
-          <option value="Theatre" <%= typeof categoryFilter !== 'undefined' && categoryFilter === 'Theatre' ? 'selected' : '' %>>Theatre</option>
-          <option value="Festival" <%= typeof categoryFilter !== 'undefined' && categoryFilter === 'Festival' ? 'selected' : '' %>>Festival</option>
-          <option value="Comedy" <%= typeof categoryFilter !== 'undefined' && categoryFilter === 'Comedy' ? 'selected' : '' %>>Comedy</option>
-          <option value="Other" <%= typeof categoryFilter !== 'undefined' && categoryFilter === 'Other' ? 'selected' : '' %>>Other</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <input type="date" class="form-control" name="date" value="<%= typeof dateFilter !== 'undefined' ? dateFilter : '' %>">
-      </div>
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-primary w-100">🔍 Search</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<% if (typeof currentUser !== 'undefined' && currentUser) { %>
-  <div class="mb-4">
-    <a href="/tickets/my-tickets" class="btn btn-info">My Booked Tickets</a>
-  </div>
-<% } %>
 
 <% if (tickets.length === 0) { %>
   <div class="alert alert-info text-center" role="alert">
     <h4>No tickets available yet!</h4>
     <p>Be the first to list a ticket.</p>
-    <% if (currentUser && (currentUser.role === 'seller' || currentUser.role === 'admin')) { %>
+    <% if (currentUser) { %>
       <a href="/tickets/new" class="btn btn-primary">List a Ticket</a>
     <% } %>
   </div>

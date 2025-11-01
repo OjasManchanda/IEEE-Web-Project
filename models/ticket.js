@@ -40,34 +40,6 @@ const ticketSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  // New fields for ticket booking and cancellation
-  status: {
-    type: String,
-    enum: ["available", "booked", "cancelled"],
-    default: "available"
-  },
-  bookedBy: {
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  },
-  bookingDate: {
-    type: Date
-  },
-  qrCode: {
-    type: String
-  },
-  bookingId: {
-    type: String
-  },
-  // Dynamic pricing fields
-  totalSeats: {
-    type: Number,
-    required: true
-  },
-  basePrice: {
-    type: Number,
-    required: true
-  }
 });
 
 module.exports = mongoose.model("Ticket", ticketSchema);
